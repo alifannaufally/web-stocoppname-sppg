@@ -277,8 +277,8 @@ export async function getRolesAndPermissions(): Promise<{ roles: { id: string | 
   for (const key of Object.keys(permissions)) allRoleNames.add(key);
   for (const key of Object.keys(countMap)) allRoleNames.add(key);
 
-  const descMap = new Map<string, string | null>(customRoles.map((cr) => [cr.name, cr.description]));
-  const idMap = new Map<string, string>(customRoles.map((cr) => [cr.name, cr.id]));
+  const descMap = new Map<string, string | null>(customRoles.map((cr: { name: string; description: string | null }) => [cr.name, cr.description]));
+  const idMap = new Map<string, string>(customRoles.map((cr: { name: string; id: string }) => [cr.name, cr.id]));
 
   const roles = [...allRoleNames].map((name) => ({
     id: idMap.get(name) || null,
