@@ -1,0 +1,72 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+}
+
+model User {
+  id        String        @id @default(uuid())
+  email     String        @unique
+  nama      String
+  password  String?
+  role      String        @default("KORLAP")
+  createdAt DateTime      @default(now())
+  entries   OpnameEntry[]
+}
+
+enum Jenis {
+  BASAH
+  KERING
+}
+
+model Item {
+  id        String        @id @default(uuid())
+  no        Int           @unique
+  nama      String
+  satuan    String
+  jenis     Jenis         @default(BASAH)
+  stokAwal  Float         @default(0)
+  aktif     Boolean       @default(true)
+  createdAt DateTime      @default(now())
+  entries   OpnameEntry[]
+
+  @@index([nama])
+}
+
+model CustomRole {
+  id          String   @id @default(uuid())
+  name        String   @unique
+  description String?
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+}
+
+model RolePermission {
+  id         String   @id @default(uuid())
+  role       String   @unique // AKUNTAN, KORLAP, KEPALA_GUDANG, ADMIN + custom
+  permissions String  // JSON array of permission keys
+  createdAt  DateTime @default(now())
+  updatedAt  DateTime @updatedAt
+}
+
+model OpnameEntry {
+  id          String   @id @default(uuid())
+  itemId      String
+  item        Item     @relation(fields: [itemId], references: [id])
+  tanggal     DateTime @db.Date
+  masuk       Float    @default(0)
+  keluar      Float    @default(0)
+  stokFisik   Float    @default(0)
+  stokSistem  Float    @default(0)
+  selisih     Float    @default(0)
+  catatan     String?
+  diinputOleh String
+  user        User     @relation(fields: [diinputOleh], references: [id])
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+
+  @@unique([itemId, tanggal])
+  @@index([tanggal])
+}

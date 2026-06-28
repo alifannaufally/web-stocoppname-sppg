@@ -1,0 +1,27 @@
+{
+  "name": "Stock Opname — SPPG Gampong Mulia",
+  "short_name": "SCB Stock",
+  "description": "Sistem pencatatan stok harian & opname fisik untuk gudang basah dan kering",
+  "start_url": "/",
+  "display": "standalone",
+  "background_color": "#092F54",
+  "theme_color": "#092F54",
+  "orientation": "portrait-primary",
+  "icons": [
+    {
+      "src": "/bgn.svg",
+      "sizes": "192x192",
+      "type": "image/svg+xml",
+      "purpose": "any maskable"
+    },
+    {
+      "src": "/bgn.svg",
+      "sizes": "512x512",
+      "type": "image/svg+xml",
+      "purpose": "any maskable"
+    }
+  ],
+  "categories": ["business", "productivity"],
+  "lang": "id-ID",
+  "dir": "ltr"
+}
