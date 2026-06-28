@@ -2,14 +2,15 @@
 CREATE SCHEMA IF NOT EXISTS "public";
 
 -- CreateEnum
-CREATE TYPE "Role" AS ENUM ('AKUNTAN', 'KORLAP', 'KEPALA_GUDANG', 'ADMIN');
+CREATE TYPE "Jenis" AS ENUM ('BASAH', 'KERING');
 
 -- CreateTable
 CREATE TABLE "User" (
     "id" TEXT NOT NULL,
     "email" TEXT NOT NULL,
     "nama" TEXT NOT NULL,
-    "role" "Role" NOT NULL DEFAULT 'KORLAP',
+    "password" TEXT,
+    "role" TEXT NOT NULL DEFAULT 'KORLAP',
     "createdAt" TIMESTAMP(3) NOT NULL DEFAULT CURRENT_TIMESTAMP,
 
     CONSTRAINT "User_pkey" PRIMARY KEY ("id")
@@ -21,11 +22,34 @@ CREATE TABLE "Item" (
     "no" INTEGER NOT NULL,
     "nama" TEXT NOT NULL,
     "satuan" TEXT NOT NULL,
+    "jenis" "Jenis" NOT NULL DEFAULT 'BASAH',
     "stokAwal" DOUBLE PRECISION NOT NULL DEFAULT 0,
     "aktif" BOOLEAN NOT NULL DEFAULT true,
     "createdAt" TIMESTAMP(3) NOT NULL DEFAULT CURRENT_TIMESTAMP,
 
     CONSTRAINT "Item_pkey" PRIMARY KEY ("id")
+);
+
+-- CreateTable
+CREATE TABLE "CustomRole" (
+    "id" TEXT NOT NULL,
+    "name" TEXT NOT NULL,
+    "description" TEXT,
+    "createdAt" TIMESTAMP(3) NOT NULL DEFAULT CURRENT_TIMESTAMP,
+    "updatedAt" TIMESTAMP(3) NOT NULL,
+
+    CONSTRAINT "CustomRole_pkey" PRIMARY KEY ("id")
+);
+
+-- CreateTable
+CREATE TABLE "RolePermission" (
+    "id" TEXT NOT NULL,
+    "role" TEXT NOT NULL,
+    "permissions" TEXT NOT NULL,
+    "createdAt" TIMESTAMP(3) NOT NULL DEFAULT CURRENT_TIMESTAMP,
+    "updatedAt" TIMESTAMP(3) NOT NULL,
+
+    CONSTRAINT "RolePermission_pkey" PRIMARY KEY ("id")
 );
 
 -- CreateTable
@@ -56,6 +80,12 @@ CREATE UNIQUE INDEX "Item_no_key" ON "Item"("no");
 CREATE INDEX "Item_nama_idx" ON "Item"("nama");
 
 -- CreateIndex
+CREATE UNIQUE INDEX "CustomRole_name_key" ON "CustomRole"("name");
+
+-- CreateIndex
+CREATE UNIQUE INDEX "RolePermission_role_key" ON "RolePermission"("role");
+
+-- CreateIndex
 CREATE INDEX "OpnameEntry_tanggal_idx" ON "OpnameEntry"("tanggal");
 
 -- CreateIndex
@@ -66,3 +96,4 @@ ALTER TABLE "OpnameEntry" ADD CONSTRAINT "OpnameEntry_itemId_fkey" FOREIGN KEY (
 
 -- AddForeignKey
 ALTER TABLE "OpnameEntry" ADD CONSTRAINT "OpnameEntry_diinputOleh_fkey" FOREIGN KEY ("diinputOleh") REFERENCES "User"("id") ON DELETE RESTRICT ON UPDATE CASCADE;
+

@@ -7,7 +7,7 @@ const anonKey = process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY || "sb_publishable_9wI
 const supabase = createClient(supabaseUrl, anonKey);
 
 const users = [
-  { email: "admin@scb.com", password: "admin123", nama: "Admin SCB", role: "ADMIN" },
+  { email: "admin@sppg.com", password: "admin123", nama: "Admin SPBG", role: "ADMIN" },
   { email: "korlap@scb.com", password: "korlap123", nama: "Korlap Gudang", role: "KORLAP" },
   { email: "korlap2@scb.com", password: "korlap123", nama: "Korlap 2", role: "KORLAP" },
   { email: "kagudang@scb.com", password: "kagudang123", nama: "Kepala Gudang", role: "KEPALA_GUDANG" },

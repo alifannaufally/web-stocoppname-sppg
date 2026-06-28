@@ -38,7 +38,7 @@ export default function LoginPage() {
   }
 
   const roleHints = [
-    { email: "admin@scb.com", label: "Admin" },
+    { email: "admin@sppg.com", label: "Admin" },
     { email: "korlap@sppg.com", label: "Korlap" },
     { email: "kagudang@sppg.com", label: "Kepala Gudang" },
     { email: "akuntan@sppg.com", label: "Akuntan" },

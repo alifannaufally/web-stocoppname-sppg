@@ -270,7 +270,7 @@ async function main() {
   if (existingUsers === 0) {
     await prisma.user.createMany({
       data: [
-        { id: "00000000-0000-0000-0000-000000000001", email: "admin@scb.com", nama: "Admin SCB", password: "admin123", role: "ADMIN" },
+        { id: "00000000-0000-0000-0000-000000000001", email: "admin@sppg.com", nama: "Admin SPBG", password: "admin123", role: "ADMIN" },
         { id: "00000000-0000-0000-0000-000000000002", email: "korlap@sppg.com", nama: "Korlap Gudang", password: "dapur123", role: "KORLAP" },
         { id: "00000000-0000-0000-0000-000000000003", email: "korlap2@sppg.com", nama: "Korlap 2", password: "dapur123", role: "KORLAP" },
         { id: "00000000-0000-0000-0000-000000000004", email: "kagudang@sppg.com", nama: "Kepala Gudang", password: "dapur123", role: "KEPALA_GUDANG" },
