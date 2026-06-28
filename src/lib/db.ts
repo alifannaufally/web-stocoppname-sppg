@@ -70,10 +70,14 @@ export async function getOpnameByDate(tanggal: string) {
 
   if (entries.length === 0) return [];
 
-  const itemIds = [...new Set(entries.map((e) => e.itemId))];
+  const itemIds = [...new Set(entries.map((e: { itemId: string }) => e.itemId))];
   const stokMap = await batchStokAwalHari(itemIds, tanggal);
 
-  return entries.map((e) => ({
+  return entries.map((e: {
+    id: string; itemId: string; tanggal: Date; masuk: number; keluar: number;
+    stokFisik: number; catatan: string | null;
+    item: { no: number; nama: string; satuan: string; stokAwal: number; jenis: string };
+  }) => ({
     id: e.id,
     itemId: e.itemId,
     tanggal: e.tanggal.toISOString().split("T")[0],
@@ -143,11 +147,11 @@ export async function getLaporanHarian(tanggal: string) {
   const items = await prisma.item.findMany({ where: { aktif: true }, orderBy: { no: "asc" } });
   const [entries, stokMap] = await Promise.all([
     prisma.opnameEntry.findMany({ where: { tanggal: new Date(tanggal) } }),
-    batchStokAwalHari(items.map((i) => i.id), tanggal),
+    batchStokAwalHari(items.map((i: { id: string }) => i.id), tanggal),
   ]);
 
-  const entryMap = new Map(entries.map((e) => [e.itemId, e]));
-  return items.map((item) => {
+  const entryMap = new Map(entries.map((e: { itemId: string; id: string; masuk: number; keluar: number; stokFisik: number; catatan: string | null }) => [e.itemId, e]));
+  return items.map((item: { id: string; no: number; nama: string; satuan: string; jenis: string; stokAwal: number }) => {
     const entry = entryMap.get(item.id);
     const stokAwal = stokMap[item.id] ?? 0;
     const masuk = entry?.masuk ?? 0;
@@ -162,7 +166,7 @@ export async function getLaporanHarian(tanggal: string) {
 
 // Laporan Periode
 export async function getLaporanPeriode(dari: string, sampai: string) {
-  const items = await prisma.item.findMany({ where: { aktif: true }, orderBy: { no: "asc" } });
+  const items: { id: string; no: number; nama: string; satuan: string; jenis: string; stokAwal: number }[] = await prisma.item.findMany({ where: { aktif: true }, orderBy: { no: "asc" } });
   const stokMap = await batchStokAwalHari(items.map((i) => i.id), dari);
 
   const dateDari = new Date(dari);

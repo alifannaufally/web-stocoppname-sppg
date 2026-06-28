@@ -27,7 +27,7 @@ export async function GET(request: Request) {
 
   // Get harian data for each date in parallel
   const sheets = await Promise.all(
-    dateRows.map(async (row) => {
+    dateRows.map(async (row: { tanggal: Date }) => {
       const dateStr = row.tanggal.toISOString().split("T")[0];
       const items = await getLaporanHarian(dateStr);
       return { tanggal: dateStr, items };

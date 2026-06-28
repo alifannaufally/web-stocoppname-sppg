@@ -118,7 +118,7 @@ export async function DELETE(request: Request) {
     if (!id && name) {
       const { getCustomRoles } = await import("@/lib/db");
       const roles = await getCustomRoles();
-      const found = roles.find((r) => r.name === name);
+      const found = roles.find((r: { id: string; name: string }) => r.name === name);
       if (!found) {
         return NextResponse.json({ error: "Custom role not found" }, { status: 404 });
       }
