@@ -37,7 +37,7 @@ export default function LoginPage() {
     }
 
     router.refresh();
-    router.push("/");
+    router.replace("/");
   }
 
   const roleHints = [
