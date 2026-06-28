@@ -5,7 +5,7 @@ import { UserManagementClient } from "./client";
 async function fetchUsers(): Promise<{ id: string; email: string; nama: string; role: string; createdAt: string }[]> {
   try {
     const { prisma } = await import("@/lib/prisma");
-    const users = await prisma.user.findMany({ orderBy: { createdAt: "desc" } });
+    const users: { id: string; email: string; nama: string; role: string; createdAt: Date }[] = await prisma.user.findMany({ orderBy: { createdAt: "desc" } });
     return users.map((u) => ({
       id: u.id,
       email: u.email,
