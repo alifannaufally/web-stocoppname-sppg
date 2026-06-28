@@ -150,7 +150,7 @@ export async function getLaporanHarian(tanggal: string) {
     batchStokAwalHari(items.map((i: { id: string }) => i.id), tanggal),
   ]);
 
-  const entryMap = new Map(entries.map((e: { itemId: string; id: string; masuk: number; keluar: number; stokFisik: number; catatan: string | null }) => [e.itemId, e]));
+  const entryMap = new Map<string, { id: string; itemId: string; masuk: number; keluar: number; stokFisik: number; catatan: string | null }>(entries.map((e: { itemId: string; id: string; masuk: number; keluar: number; stokFisik: number; catatan: string | null }) => [e.itemId, e]));
   return items.map((item: { id: string; no: number; nama: string; satuan: string; jenis: string; stokAwal: number }) => {
     const entry = entryMap.get(item.id);
     const stokAwal = stokMap[item.id] ?? 0;
@@ -178,7 +178,7 @@ export async function getLaporanPeriode(dari: string, sampai: string) {
     AND oe."itemId" = ANY(${items.map((i) => i.id)})
     GROUP BY oe."itemId"
   `;
-  const aggMap = new Map(aggRows.map((r) => [r.item_id, { masuk: Number(r.total_masuk), keluar: Number(r.total_keluar) }]));
+  const aggMap = new Map<string, { masuk: number; keluar: number }>(aggRows.map((r: { item_id: string; total_masuk: number; total_keluar: number }) => [r.item_id, { masuk: Number(r.total_masuk), keluar: Number(r.total_keluar) }]));
 
   return items.map((item) => {
     const agg = aggMap.get(item.id);
