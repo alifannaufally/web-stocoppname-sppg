@@ -6,7 +6,7 @@ async function fetchUsers(): Promise<{ id: string; email: string; nama: string; 
   try {
     const { prisma } = await import("@/lib/prisma");
     const users: { id: string; email: string; nama: string; role: string; createdAt: Date }[] = await prisma.user.findMany({ orderBy: { createdAt: "desc" } });
-    return users.map((u) => ({
+    return users.map((u: { id: string; email: string; nama: string; role: string; createdAt: Date }) => ({
       id: u.id,
       email: u.email,
       nama: u.nama,
