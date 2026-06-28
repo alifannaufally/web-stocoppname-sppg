@@ -14,7 +14,7 @@ async function buildWorkbook(sheets: { tanggal: string; items: Record<string, un
   const wb = new ExcelJS.Workbook();
   for (const sheet of sheets) {
     const ws = wb.addWorksheet(sheet.tanggal);
-    ws.columns = HEADERS.map((h) => ({ header: h, key: h, width: h === "Nama" ? 24 : h === "Gambar" ? 12 : 14 }));
+    ws.columns = HEADERS.map((h) => ({ header: h, key: h, width: h === "Nama" ? 24 : h === "Gambar" ? 10 : 14 }));
     const headerRow = ws.getRow(1);
     headerRow.font = { bold: true, color: { argb: "FFFFFFFF" }, size: 11 };
     headerRow.fill = { type: "pattern", pattern: "solid", fgColor: { argb: "FF092F54" } };
@@ -24,7 +24,7 @@ async function buildWorkbook(sheets: { tanggal: string; items: Record<string, un
       KEYS.forEach((k, i) => { rowData[HEADERS[i]] = item[k]; });
       const addedRow = ws.addRow(rowData);
 
-      addedRow.height = 45;
+      addedRow.height = 60;
 
       // Add image if present
       const imgUrl = item.catatan as string;
@@ -32,13 +32,13 @@ async function buildWorkbook(sheets: { tanggal: string; items: Record<string, un
         try {
           const imgRes = await fetch(imgUrl);
           if (imgRes.ok) {
+            const imgArr = await imgRes.arrayBuffer();
             const contentType = imgRes.headers.get("content-type") || "";
             const ext = contentType.includes("png") ? "png" : "jpeg";
-            const imgArr = await imgRes.arrayBuffer();
             const imgId = wb.addImage({ buffer: imgArr, extension: ext });
             ws.addImage(imgId, {
               tl: { col: 7, row: addedRow.number - 1 },
-              ext: { width: 60, height: 60 },
+              ext: { width: 72, height: 54 },
               editAs: "oneCell",
             });
             addedRow.getCell(8).value = "";
