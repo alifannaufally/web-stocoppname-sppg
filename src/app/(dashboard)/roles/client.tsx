@@ -25,7 +25,7 @@ import {
   Trash2,
 } from "lucide-react";
 
-interface Role {
+export interface Role {
   id: string | null;
   name: string;
   description: string | null;
