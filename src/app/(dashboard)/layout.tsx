@@ -1,4 +1,3 @@
-import Link from "next/link";
 import { redirect } from "next/navigation";
 import { getCurrentUser } from "@/lib/auth";
 import {
@@ -10,7 +9,7 @@ import {
   Shield,
   Settings,
 } from "lucide-react";
-import { SidebarUserSection } from "./sidebar-user-section";
+import { DashboardSidebar } from "./sidebar";
 
 const navItems = [
   { href: "/dashboard", label: "Dashboard", icon: LayoutDashboard, roles: ["AKUNTAN", "KORLAP", "KEPALA_GUDANG", "ADMIN"] },
@@ -33,41 +32,14 @@ export default async function DashboardLayout({
     redirect("/login");
   }
 
-  const userRole = user.role;
-
   return (
-    <div className="flex h-screen">
-      <aside className="flex w-64 flex-col bg-[#092F54] text-white">
-        <div className="flex items-center gap-3 border-b border-white/10 px-6 py-5">
-          <img src="/logo-bgn.png" alt="SPPG" className="h-10 w-10 rounded-lg object-cover" />
-          <div>
-            <p className="text-sm font-semibold">SPPG GAMPONG MULIA</p>
-            <p className="text-xs text-white/60">Gudang Basah dan Kering</p>
-          </div>
-        </div>
-
-        <nav className="flex-1 space-y-1 px-3 py-4">
-          {navItems
-            .filter((item) => item.roles.includes(userRole))
-            .map((item) => (
-              <Link
-                key={item.href}
-                href={item.href}
-                className="flex items-center gap-3 rounded-lg px-3 py-2 text-sm text-white/70 transition-colors hover:bg-white/10 hover:text-white"
-              >
-                <item.icon className="h-4 w-4" />
-                {item.label}
-              </Link>
-            ))}
-        </nav>
-
-        <div className="border-t border-white/10 px-4 py-4">
-          <SidebarUserSection user={{ id: user.id, email: user.email, nama: user.nama, role: user.role }} />
-        </div>
-      </aside>
-
-      <main className="flex-1 overflow-auto bg-gray-50">
-        <div className="p-8">{children}</div>
+    <div className="flex min-h-screen">
+      <DashboardSidebar
+        navItems={navItems}
+        user={{ id: user.id, email: user.email, nama: user.nama, role: user.role }}
+      />
+      <main className="flex-1 overflow-auto bg-gray-50 pt-16 lg:pt-0">
+        <div className="p-4 sm:p-6 lg:p-8">{children}</div>
       </main>
     </div>
   );

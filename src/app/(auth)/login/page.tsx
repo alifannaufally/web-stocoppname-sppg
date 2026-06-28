@@ -38,10 +38,10 @@ export default function LoginPage() {
   }
 
   const roleHints = [
-    { email: "admin@sppg.com", label: "Admin" },
-    { email: "korlap@sppg.com", label: "Korlap" },
-    { email: "kagudang@sppg.com", label: "Kepala Gudang" },
-    { email: "akuntan@sppg.com", label: "Akuntan" },
+    { email: "admin@sppg.com", label: "Admin", password: "admin123" },
+    { email: "korlap@scb.com", label: "Korlap", password: "korlap123" },
+    { email: "kagudang@scb.com", label: "Kepala Gudang", password: "kagudang123" },
+    { email: "akuntan@scb.com", label: "Akuntan", password: "akuntan123" },
   ];
 
   return (
@@ -126,14 +126,14 @@ export default function LoginPage() {
             </Button>
           </form>
 
-          {/* <div className="border-t border-gray-100 pt-4">
+          <div className="border-t border-gray-100 pt-4">
             <p className="mb-3 text-center text-xs text-gray-400">Akun Demo</p>
             <div className="grid grid-cols-2 gap-2">
               {roleHints.map((hint) => (
                 <button
                   key={hint.email}
                   type="button"
-                  onClick={() => setEmail(hint.email)}
+                  onClick={() => { setEmail(hint.email); setPassword(hint.password); }}
                   className="rounded-lg border border-gray-100 bg-gray-50 px-3 py-2 text-left text-xs hover:border-[#F3C623]/40 hover:bg-[#F3C623]/5 transition-all"
                 >
                   <p className="font-medium text-gray-700">{hint.label}</p>
@@ -141,10 +141,7 @@ export default function LoginPage() {
                 </button>
               ))}
             </div>
-            <p className="mt-2 text-center text-[10px] text-gray-300">
-              Password: <span className="font-mono">dapur123</span> (admin: admin123)
-            </p>
-          </div> */}
+          </div>
         </CardContent>
       </Card>
     </div>
