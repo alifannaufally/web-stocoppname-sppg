@@ -70,7 +70,7 @@ export async function getOpnameByDate(tanggal: string) {
 
   if (entries.length === 0) return [];
 
-  const itemIds = [...new Set(entries.map((e: { itemId: string }) => e.itemId))];
+  const itemIds: string[] = [...new Set(entries.map((e: { itemId: string }) => e.itemId))];
   const stokMap = await batchStokAwalHari(itemIds, tanggal);
 
   return entries.map((e: {
