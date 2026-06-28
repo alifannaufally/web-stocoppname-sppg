@@ -17,8 +17,18 @@ interface DbUser {
 }
 
 async function queryDbUser(userId: string, email: string): Promise<DbUser | null> {
+  // Try lookup by auth user ID first
   try {
-    return await prisma.user.findUnique({ where: { id: userId } });
+    const user = await prisma.user.findUnique({ where: { id: userId } });
+    if (user) return user;
+  } catch {
+    // Prisma unavailable, try Management API
+  }
+
+  // Try lookup by email in case auth ID doesn't match public.User ID
+  try {
+    const user = await prisma.user.findUnique({ where: { email } });
+    if (user) return user;
   } catch {
     // Prisma unavailable, try Management API
   }
@@ -39,7 +49,7 @@ async function queryDbUser(userId: string, email: string): Promise<DbUser | null
           "Content-Type": "application/json",
         },
         body: JSON.stringify({
-          query: `SELECT id, email, nama, "password", role, "createdAt" FROM "User" WHERE id = '${userId}' LIMIT 1`,
+          query: `SELECT id, email, nama, "password", role, "createdAt" FROM "User" WHERE email = '${email}' LIMIT 1`,
         }),
       },
     );
