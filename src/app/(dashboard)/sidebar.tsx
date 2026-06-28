@@ -3,22 +3,24 @@
 import { useState } from "react";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
-import { Menu, X, type LucideIcon } from "lucide-react";
+import {
+  Menu, X,
+  LayoutDashboard, ClipboardList, FileText, Users, Package, Shield, Settings,
+} from "lucide-react";
 import { SidebarUserSection } from "./sidebar-user-section";
-
-interface NavItem {
-  href: string;
-  label: string;
-  icon: LucideIcon;
-  roles: string[];
-}
-
 import type { UserData } from "./types";
 
-export function DashboardSidebar({ navItems, user }: {
-  navItems: NavItem[];
-  user: UserData;
-}) {
+const navItems = [
+  { href: "/dashboard", label: "Dashboard", icon: LayoutDashboard, roles: ["AKUNTAN", "KORLAP", "KEPALA_GUDANG", "ADMIN"] },
+  { href: "/input", label: "Input Harian", icon: ClipboardList, roles: ["KORLAP", "KEPALA_GUDANG", "ADMIN"] },
+  { href: "/komoditas", label: "Komoditas", icon: Package, roles: ["KORLAP", "KEPALA_GUDANG", "ADMIN"] },
+  { href: "/laporan", label: "Laporan", icon: FileText, roles: ["AKUNTAN", "KORLAP", "KEPALA_GUDANG", "ADMIN"] },
+  { href: "/pengguna", label: "Pengguna", icon: Users, roles: ["ADMIN"] },
+  { href: "/roles", label: "Role & Hak Akses", icon: Shield, roles: ["ADMIN"] },
+  { href: "/pengaturan", label: "Pengaturan", icon: Settings, roles: ["ADMIN"] },
+];
+
+export function DashboardSidebar({ user }: { user: UserData }) {
   const [open, setOpen] = useState(false);
   const pathname = usePathname();
 
