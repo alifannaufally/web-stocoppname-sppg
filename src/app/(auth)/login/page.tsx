@@ -126,7 +126,7 @@ export default function LoginPage() {
             </Button>
           </form>
 
-          {/* <div className="border-t border-gray-100 pt-4">
+          <div className="border-t border-gray-100 pt-4">
             <p className="mb-3 text-center text-xs text-gray-400">Akun Demo</p>
             <div className="grid grid-cols-2 gap-2">
               {roleHints.map((hint) => (
@@ -141,7 +141,7 @@ export default function LoginPage() {
                 </button>
               ))}
             </div>
-          </div> */}
+          </div>
         </CardContent>
       </Card>
     </div>
