@@ -30,7 +30,9 @@ async function buildWorkbook(sheets: { tanggal: string; items: Record<string, un
       const imgUrl = item.catatan as string;
       if (imgUrl?.startsWith("http")) {
         try {
-          const imgRes = await fetch(imgUrl);
+          const imgRes = await fetch(imgUrl, {
+            headers: { "apikey": process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY || "" },
+          });
           if (imgRes.ok) {
             const contentType = imgRes.headers.get("content-type") || "";
             const ext = contentType.includes("png") ? "png" : "jpeg";
@@ -106,7 +108,9 @@ export async function GET(request: Request) {
         if (url?.startsWith("http") && !seenUrls.has(url)) {
           seenUrls.add(url);
           try {
-            const imgRes = await fetch(url);
+            const imgRes = await fetch(url, {
+              headers: { "apikey": process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY || "" },
+            });
             if (imgRes.ok) {
               const ext = url.split(".").pop() || "jpg";
               const imgName = url.split("/").pop() || `img-${seenUrls.size}.${ext}`;
