@@ -2,8 +2,8 @@ import "dotenv/config";
 import { createClient } from "@supabase/supabase-js";
 
 const supabaseUrl = process.env.NEXT_PUBLIC_SUPABASE_URL || "https://ezgcdogmhizldtszbiyv.supabase.co";
-const serviceKey = process.env.SUPABASE_SERVICE_ROLE_KEY;
-const mgmtToken = process.env.SUPABASE_ACCESS_TOKEN;
+const serviceKey = process.env.SUPABASE_SERVICE_ROLE_KEY!;
+const mgmtToken = process.env.SUPABASE_ACCESS_TOKEN!;
 const projectRef = supabaseUrl.match(/https:\/\/(.+)\.supabase\.co/)?.[1] || "ezgcdogmhizldtszbiyv";
 
 const supabase = createClient(supabaseUrl, serviceKey, {
