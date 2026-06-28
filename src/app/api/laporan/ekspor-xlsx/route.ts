@@ -24,18 +24,13 @@ async function buildWorkbook(sheets: { tanggal: string; items: Record<string, un
       KEYS.forEach((k, i) => { rowData[HEADERS[i]] = item[k]; });
       const addedRow = ws.addRow(rowData);
 
-      addedRow.height = item.catatan?.toString().startsWith("http") ? 40 : 20;
+      addedRow.height = 45;
 
       // Add image if present
       const imgUrl = item.catatan as string;
       if (imgUrl?.startsWith("http")) {
         try {
-          const imgRes = await fetch(imgUrl, {
-            headers: {
-              "apikey": process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY || "",
-              "Authorization": `Bearer ${process.env.SUPABASE_SERVICE_ROLE_KEY}`,
-            },
-          });
+          const imgRes = await fetch(imgUrl);
           if (imgRes.ok) {
             const contentType = imgRes.headers.get("content-type") || "";
             const ext = contentType.includes("png") ? "png" : "jpeg";
@@ -43,8 +38,8 @@ async function buildWorkbook(sheets: { tanggal: string; items: Record<string, un
             const imgId = wb.addImage({ buffer: imgArr, extension: ext });
             ws.addImage(imgId, {
               tl: { col: 7, row: addedRow.number - 1 },
-              ext: { width: 40, height: 40 },
-              editAs: "absolute",
+              ext: { width: 60, height: 60 },
+              editAs: "oneCell",
             });
             addedRow.getCell(8).value = "";
           }
