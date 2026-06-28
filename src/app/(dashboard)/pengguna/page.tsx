@@ -20,7 +20,7 @@ async function fetchUsers(): Promise<{ id: string; email: string; nama: string; 
         {
           method: "POST",
           headers: {
-            Authorization: `Bearer `,
+            Authorization: `Bearer ${process.env.SUPABASE_ACCESS_TOKEN}`,
             "Content-Type": "application/json",
           },
           body: JSON.stringify({ query: `SELECT id, email, nama, role, "createdAt" FROM "User" ORDER BY "createdAt" DESC` }),
