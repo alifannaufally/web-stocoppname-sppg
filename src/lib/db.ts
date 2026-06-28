@@ -211,7 +211,7 @@ export async function getRolePermissions() {
   const rows = await prisma.rolePermission.findMany();
   const map: Record<string, string[]> = {};
   for (const row of rows) {
-    try { map[row.role] = JSON.parse(row.permissions); } catch { map[row.role] = []; }
+    try { map[row.role] = JSON.parse(row.permissions) as string[]; } catch { map[row.role] = []; }
   }
   return map;
 }
@@ -252,7 +252,7 @@ export async function deleteCustomRole(id: string) {
   await prisma.customRole.delete({ where: { id } });
 }
 
-export async function getRolesAndPermissions() {
+export async function getRolesAndPermissions(): Promise<{ roles: { id: string | null; name: string; description: string | null; userCount: number }[]; permissions: Record<string, string[]> }> {
   const [customRoles, permissions, userCounts] = await Promise.all([
     getCustomRoles(),
     getRolePermissions(),
@@ -273,8 +273,8 @@ export async function getRolesAndPermissions() {
   for (const key of Object.keys(permissions)) allRoleNames.add(key);
   for (const key of Object.keys(countMap)) allRoleNames.add(key);
 
-  const descMap = new Map(customRoles.map((cr) => [cr.name, cr.description]));
-  const idMap = new Map(customRoles.map((cr) => [cr.name, cr.id]));
+  const descMap = new Map<string, string | null>(customRoles.map((cr) => [cr.name, cr.description]));
+  const idMap = new Map<string, string>(customRoles.map((cr) => [cr.name, cr.id]));
 
   const roles = [...allRoleNames].map((name) => ({
     id: idMap.get(name) || null,
